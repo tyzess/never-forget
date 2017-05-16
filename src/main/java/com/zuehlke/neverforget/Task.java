@@ -3,10 +3,8 @@ package com.zuehlke.neverforget;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -14,6 +12,7 @@ import java.util.Date;
  * Created by urzy on 15.05.2017.
  */
 @Entity
+@Table(name = "task")
 public class Task {
 
     @Id
@@ -26,13 +25,27 @@ public class Task {
     @UpdateTimestamp
     private Date modified;
 
+    @NotNull
+    @Size(min = 1)
     private String name;
+
+    @Size(max = 300)
     private String description;
+
     private LocalDateTime dueDatetime;
+
+    @NotNull
     private boolean wholeDay;
+
     private boolean checked;
 
-    protected  Task() {}
+    @ManyToOne()
+    @JoinColumn(name="category_id")
+    private Category category;
+
+    protected  Task() {
+    }
+
 
     public Task(String name, String description, LocalDateTime dueDatetime, boolean wholeDay) {
         this.name = name;
@@ -96,6 +109,28 @@ public class Task {
 
     public void setWholeDay(boolean wholeDay) {
         this.wholeDay = wholeDay;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", created=" + created +
+                ", modified=" + modified +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", dueDatetime=" + dueDatetime +
+                ", wholeDay=" + wholeDay +
+                ", checked=" + checked +
+                '}';
     }
 
 }

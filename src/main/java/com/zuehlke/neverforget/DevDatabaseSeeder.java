@@ -18,13 +18,27 @@ public class DevDatabaseSeeder {
     @Autowired
     TaskRepository taskRepository;
 
+    @Autowired
+    CategoryRepository categoryRepository;
+
     @PostConstruct
     public void populateSampleData() {
-        taskRepository.save(new Task("Buy Milk","",LocalDateTime.now(), false));
-        taskRepository.save(new Task("Build House","",LocalDateTime.now(), true));
-        taskRepository.save(new Task("Go to Work","",LocalDateTime.now(), false));
-        taskRepository.save(new Task("Write Software","",LocalDateTime.now(), false));
+        Task t1 = new Task("Buy Milk","",LocalDateTime.now(), false);
+        Task t2 = new Task("Build House","",LocalDateTime.now(), true);
+        Task t3 = new Task("Go to Work","",LocalDateTime.now(), false);
+        Task t4 = new Task("Write Software","",LocalDateTime.now(), false);
 
+        taskRepository.save(t1);
+        taskRepository.save(t2);
+        taskRepository.save(t3);
+        taskRepository.save(t4);
+
+        Category c = new Category("Category1", "Everything");
+        categoryRepository.save(c);
+        c.addTask(t1);
+        c.addTask(t2);
+        categoryRepository.save(c);
+        
         log.info("Populated DB with sample data");
     }
 
