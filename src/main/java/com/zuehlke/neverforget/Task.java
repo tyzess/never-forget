@@ -8,6 +8,7 @@ import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+
 /**
  * Created by urzy on 15.05.2017.
  */
@@ -17,7 +18,7 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @CreationTimestamp
     private Date created;
@@ -39,13 +40,15 @@ public class Task {
 
     private boolean checked;
 
-    @ManyToOne()
-    @JoinColumn(name="category_id")
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Category.class)
+    @JoinColumn(name = "category_id")
     private Category category;
+
+    @Column(name = "category")
+    private Long categoryId;
 
     protected  Task() {
     }
-
 
     public Task(String name, String description, LocalDateTime dueDatetime, boolean wholeDay) {
         this.name = name;
@@ -53,6 +56,15 @@ public class Task {
         this.dueDatetime = dueDatetime;
         this.wholeDay = wholeDay;
         this.checked = false;
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Date getCreated() {

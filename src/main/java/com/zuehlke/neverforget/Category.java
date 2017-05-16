@@ -23,7 +23,7 @@ public class Category {
 
     private String description;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
     private List<Task> tasks = new ArrayList<>();
 
     protected Category() {
@@ -62,8 +62,8 @@ public class Category {
         return tasks;
     }
 
-    public boolean addTask(Task task) {
-        return this.tasks.add(task);
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
     @Override

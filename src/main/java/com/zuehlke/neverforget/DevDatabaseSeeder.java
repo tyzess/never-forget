@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 /**
  * Created by urzy on 16.05.2017.
@@ -33,12 +34,14 @@ public class DevDatabaseSeeder {
         taskRepository.save(t3);
         taskRepository.save(t4);
 
+        log.info("---------------------");
         Category c = new Category("Category1", "Everything");
         categoryRepository.save(c);
-        c.addTask(t1);
-        c.addTask(t2);
+        c.setTasks(new ArrayList<Task>(){{add(t1);}});
+        c.getTasks().add(t2);
         categoryRepository.save(c);
-        
+        log.info("---------------------");
+
         log.info("Populated DB with sample data");
     }
 
