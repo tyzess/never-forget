@@ -18,4 +18,5 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
                                                   @Param("before") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate before);
     List<Task> findByDueDateAfter(@Param("after") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate after);
     List<Task> findByDueDateBefore(@Param("before") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate before);
+    List<Task> findByDueDateIsNull();
 }
