@@ -12,4 +12,5 @@ import java.util.List;
 public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
     List<Task> findByName(@Param("name") String name);
     List<Task> findByDueDatetime(@Param("dueDatetime") LocalDateTime dueDatetime);
+    List<Task> findByCategory_Id(@Param("id") Long id);
 }

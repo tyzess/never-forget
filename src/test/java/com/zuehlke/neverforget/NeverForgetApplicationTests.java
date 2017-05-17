@@ -54,24 +54,7 @@ public class NeverForgetApplicationTests {
 		task.setCategory(category);
 		taskRepository.save(task);
 
-		assertEquals(taskRepository.findOne(1L).getCategory().getTasks().size(), categoryRepository.findOne(1L).getTasks().size());
-		assertEquals(taskRepository.findOne(1L).getCategory().getTasks().get(0), task);
-	}
-
-	@Test
-	public void taskCanBeAddedToCategory() {
-		Category category = new Category("test1", "desc");
-		categoryRepository.save(category);
-		Task task = new Task("test1", "desc", LocalDateTime.now(), false);
-		taskRepository.save(task);
-
-		assertThat(categoryRepository.findOne(1L).getTasks(), empty());
-
-		category.getTasks().add(task);
-		categoryRepository.save(category);
-
-		assertEquals(categoryRepository.findOne(1L).getTasks().size(), 1);
-		assertEquals(categoryRepository.findOne(1L).getTasks().get(0), task);
+		assertEquals(taskRepository.findOne(1L).getCategory(), categoryRepository.findOne(1L));
 	}
 
 }

@@ -34,12 +34,10 @@ public class Task {
     @NotNull
     private boolean wholeDay;
 
+    @NotNull
     private boolean checked;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "category_task_table",
-            joinColumns = {@JoinColumn(name = "task_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")})
+    @ManyToOne
     private Category category;
 
 
@@ -52,7 +50,6 @@ public class Task {
         this.dueDatetime = dueDatetime;
         this.wholeDay = wholeDay;
         this.checked = false;
-
     }
 
     public Long getId() {
@@ -153,7 +150,8 @@ public class Task {
         if (checked != task.checked) return false;
         if (!name.equals(task.name)) return false;
         if (description != null ? !description.equals(task.description) : task.description != null) return false;
-        return dueDatetime != null ? dueDatetime.equals(task.dueDatetime) : task.dueDatetime == null;
+        if (dueDatetime != null ? !dueDatetime.equals(task.dueDatetime) : task.dueDatetime != null) return false;
+        return category != null ? category.equals(task.category) : task.category == null;
     }
 
     @Override
@@ -163,6 +161,8 @@ public class Task {
         result = 31 * result + (dueDatetime != null ? dueDatetime.hashCode() : 0);
         result = 31 * result + (wholeDay ? 1 : 0);
         result = 31 * result + (checked ? 1 : 0);
+        result = 31 * result + (category != null ? category.hashCode() : 0);
         return result;
     }
+
 }

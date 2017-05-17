@@ -60,7 +60,7 @@ public class TaskController {
     }
 
     @RequestMapping(path = "/{id}/category", method = GET)
-    public @ResponseBody ResponseEntity<Category> setTaskCategory(@PathVariable Long id) {
+    public @ResponseBody ResponseEntity<Category> getTaskCategory(@PathVariable Long id) {
         Task task = taskRepository.findOne(id);
         if(task != null) {
             Category category = task.getCategory();

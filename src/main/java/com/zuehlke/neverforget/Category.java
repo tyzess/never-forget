@@ -5,9 +5,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 @Entity
 public class Category {
@@ -22,19 +19,12 @@ public class Category {
 
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "category_task_table",
-            joinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "task_id", referencedColumnName = "id")})
-    private List<Task> tasks;
-
     protected Category() {
     }
 
     public Category(String name, String description) {
         this.name = name;
         this.description = description;
-        this.tasks = new ArrayList<>();
     }
 
     public Long getId() {
@@ -61,22 +51,31 @@ public class Category {
         this.description = description;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
     @Override
     public String toString() {
         return "Category{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", tasks.size()=" + tasks.size() +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Category category = (Category) o;
+
+        if (!name.equals(category.name)) return false;
+        return description != null ? description.equals(category.description) : category.description == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        return result;
     }
 
 }
