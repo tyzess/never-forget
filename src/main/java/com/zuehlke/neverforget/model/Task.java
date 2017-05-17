@@ -8,6 +8,7 @@ import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -43,6 +44,11 @@ public class Task {
     @ManyToOne
     private Category category;
 
+    @ManyToOne
+    private Task parent;
+
+    @OneToMany(mappedBy = "parent")
+    private List<Task> children;
 
     protected Task() {
     }
@@ -134,6 +140,22 @@ public class Task {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Task getParent() {
+        return parent;
+    }
+
+    public void setParent(Task parent) {
+        this.parent = parent;
+    }
+
+    public List<Task> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Task> children) {
+        this.children = children;
     }
 
     @Override

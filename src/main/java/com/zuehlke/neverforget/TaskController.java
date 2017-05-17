@@ -70,4 +70,14 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @RequestMapping(path = "/{id}/parent", method = GET)
+    public @ResponseBody ResponseEntity<Task> getTaskParent(@PathVariable Long id) {
+        Task task = taskRepository.findOne(id);
+        if(task != null) {
+            Task parent = task.getParent();
+            return new ResponseEntity<>(parent, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }
