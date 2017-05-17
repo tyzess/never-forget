@@ -1,16 +1,15 @@
 package com.zuehlke.neverforget;
 
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by urzy on 16.05.2017.
- */
+
 @Entity
-@Table(name = "category")
 public class Category {
 
     @Id
@@ -23,8 +22,11 @@ public class Category {
 
     private String description;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
-    private List<Task> tasks = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "category_task_table",
+            joinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "task_id", referencedColumnName = "id")})
+    private List<Task> tasks;
 
     protected Category() {
     }
@@ -32,6 +34,7 @@ public class Category {
     public Category(String name, String description) {
         this.name = name;
         this.description = description;
+        this.tasks = new ArrayList<>();
     }
 
     public Long getId() {
@@ -69,9 +72,10 @@ public class Category {
     @Override
     public String toString() {
         return "Category{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", tasks.size()=" + tasks.size() +
                 '}';
     }
 

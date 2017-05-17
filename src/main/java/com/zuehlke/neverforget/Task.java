@@ -9,11 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 
-/**
- * Created by urzy on 15.05.2017.
- */
 @Entity
-@Table(name = "task")
 public class Task {
 
     @Id
@@ -40,14 +36,14 @@ public class Task {
 
     private boolean checked;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Category.class)
-    @JoinColumn(name = "category_id")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "category_task_table",
+            joinColumns = {@JoinColumn(name = "task_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")})
     private Category category;
 
-    @Column(name = "category")
-    private Long categoryId;
 
-    protected  Task() {
+    protected Task() {
     }
 
     public Task(String name, String description, LocalDateTime dueDatetime, boolean wholeDay) {
@@ -56,8 +52,8 @@ public class Task {
         this.dueDatetime = dueDatetime;
         this.wholeDay = wholeDay;
         this.checked = false;
-    }
 
+    }
 
     public Long getId() {
         return id;
@@ -142,7 +138,31 @@ public class Task {
                 ", dueDatetime=" + dueDatetime +
                 ", wholeDay=" + wholeDay +
                 ", checked=" + checked +
+                ", category=" + category +
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Task task = (Task) o;
+
+        if (wholeDay != task.wholeDay) return false;
+        if (checked != task.checked) return false;
+        if (!name.equals(task.name)) return false;
+        if (description != null ? !description.equals(task.description) : task.description != null) return false;
+        return dueDatetime != null ? dueDatetime.equals(task.dueDatetime) : task.dueDatetime == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (dueDatetime != null ? dueDatetime.hashCode() : 0);
+        result = 31 * result + (wholeDay ? 1 : 0);
+        result = 31 * result + (checked ? 1 : 0);
+        return result;
+    }
 }

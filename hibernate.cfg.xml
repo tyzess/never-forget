@@ -1,0 +1,6 @@
+<hibernate-configuration>
+    <session-factory>
+        <mapping class ="com.zuehlke.neverforget.Task" />
+        <mapping class ="com.zuehlke.neverforget.Category" />
+    </session-factory>
+</hibernate-configuration>
