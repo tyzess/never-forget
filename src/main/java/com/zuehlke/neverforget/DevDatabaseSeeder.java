@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -22,6 +23,9 @@ public class DevDatabaseSeeder {
 
     @PostConstruct
     public void populateSampleData() {
+
+        LocalDate parsedDate = LocalDate.parse("2017-05-17");
+        log.error("------------------>" + parsedDate.getEra());
         //TODO Seeder should not be running when testing!!!
 //        Task t1 = new Task("Buy Milk","",LocalDateTime.now(), false);
 //        Task t2 = new Task("Build House","",LocalDateTime.now(), true);

@@ -1,5 +1,7 @@
 package com.zuehlke.neverforget;
 
+import com.zuehlke.neverforget.model.Category;
+import com.zuehlke.neverforget.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -47,6 +47,7 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    //XXX pass category id via body params
     @RequestMapping(path = "/{id}/category", method = POST)
     public @ResponseBody ResponseEntity<Task> setTaskCategory(@RequestParam(name = "category_id") Long category_id, @PathVariable Long id) {
         Task task = taskRepository.findOne(id);

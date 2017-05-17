@@ -1,11 +1,12 @@
-package com.zuehlke.neverforget;
+package com.zuehlke.neverforget.model;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 
@@ -29,7 +30,9 @@ public class Task {
     @Size(max = 300)
     private String description;
 
-    private LocalDateTime dueDatetime;
+    private LocalDate dueDate;
+
+    private LocalTime dueTime;
 
     @NotNull
     private boolean wholeDay;
@@ -44,10 +47,11 @@ public class Task {
     protected Task() {
     }
 
-    public Task(String name, String description, LocalDateTime dueDatetime, boolean wholeDay) {
+    public Task(String name, String description, LocalDate dueDate, LocalTime dueTime, boolean wholeDay) {
         this.name = name;
         this.description = description;
-        this.dueDatetime = dueDatetime;
+        this.dueDate = dueDate;
+        this.dueTime = dueTime;
         this.wholeDay = wholeDay;
         this.checked = false;
     }
@@ -100,12 +104,20 @@ public class Task {
         this.description = description;
     }
 
-    public LocalDateTime getDueDatetime() {
-        return dueDatetime;
+    public LocalDate getDueDate() {
+        return dueDate;
     }
 
-    public void setDueDatetime(LocalDateTime dueDatetime) {
-        this.dueDatetime = dueDatetime;
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public LocalTime getDueTime() {
+        return dueTime;
+    }
+
+    public void setDueTime(LocalTime dueTime) {
+        this.dueTime = dueTime;
     }
 
     public boolean isWholeDay() {
@@ -132,7 +144,8 @@ public class Task {
                 ", modified=" + modified +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", dueDatetime=" + dueDatetime +
+                ", dueDate=" + dueDate +
+                ", dueTime=" + dueTime +
                 ", wholeDay=" + wholeDay +
                 ", checked=" + checked +
                 ", category=" + category +
@@ -150,7 +163,8 @@ public class Task {
         if (checked != task.checked) return false;
         if (!name.equals(task.name)) return false;
         if (description != null ? !description.equals(task.description) : task.description != null) return false;
-        if (dueDatetime != null ? !dueDatetime.equals(task.dueDatetime) : task.dueDatetime != null) return false;
+        if (dueDate != null ? !dueDate.equals(task.dueDate) : task.dueDate != null) return false;
+        if (dueTime != null ? !dueTime.equals(task.dueTime) : task.dueTime != null) return false;
         return category != null ? category.equals(task.category) : task.category == null;
     }
 
@@ -158,7 +172,8 @@ public class Task {
     public int hashCode() {
         int result = name.hashCode();
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (dueDatetime != null ? dueDatetime.hashCode() : 0);
+        result = 31 * result + (dueDate != null ? dueDate.hashCode() : 0);
+        result = 31 * result + (dueTime != null ? dueTime.hashCode() : 0);
         result = 31 * result + (wholeDay ? 1 : 0);
         result = 31 * result + (checked ? 1 : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);

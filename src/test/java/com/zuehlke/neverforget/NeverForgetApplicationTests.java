@@ -1,5 +1,7 @@
 package com.zuehlke.neverforget;
 
+import com.zuehlke.neverforget.model.Category;
+import com.zuehlke.neverforget.model.Task;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -25,12 +28,12 @@ public class NeverForgetApplicationTests {
 
 	@Test
 	public void taskIsSaved() {
-		Task task = new Task("test1", "desc", LocalDateTime.now(), false);
+		Task task = new Task("test1", "desc",  LocalDate.now(), LocalTime.now(), false);
 		assertThat(taskRepository.findOne(1L), is(nullValue()));
 		taskRepository.save(task);
 		assertEquals(taskRepository.findOne(1L).getName(), task.getName());
 		assertEquals(taskRepository.findOne(1L).getDescription(), task.getDescription());
-		assertEquals(taskRepository.findOne(1L).getDueDatetime(), task.getDueDatetime());
+		assertEquals(taskRepository.findOne(1L).getDueDate(), task.getDueDate());
 	}
 
 	@Test
@@ -44,7 +47,7 @@ public class NeverForgetApplicationTests {
 
 	@Test
 	public void categoryCanBeAddedToTask() {
-		Task task = new Task("test1", "desc", LocalDateTime.now(), false);
+		Task task = new Task("test1", "desc", LocalDate.now(), LocalTime.now(), false);
 		taskRepository.save(task);
 		Category category = new Category("test1", "desc");
 		categoryRepository.save(category);
