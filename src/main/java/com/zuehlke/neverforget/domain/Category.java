@@ -1,4 +1,4 @@
-package com.zuehlke.neverforget.model;
+package com.zuehlke.neverforget.domain;
 
 
 import javax.persistence.*;

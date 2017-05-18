@@ -1,7 +1,10 @@
-package com.zuehlke.neverforget;
+package com.zuehlke.neverforget.web;
 
-import com.zuehlke.neverforget.model.Category;
-import com.zuehlke.neverforget.model.Task;
+import com.zuehlke.neverforget.domain.Category;
+import com.zuehlke.neverforget.domain.CategoryRepository;
+import com.zuehlke.neverforget.domain.Task;
+import com.zuehlke.neverforget.domain.TaskRepository;
+import com.zuehlke.neverforget.util.DevDatabaseSeeder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

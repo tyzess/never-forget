@@ -1,6 +1,6 @@
-package com.zuehlke.neverforget;
+package com.zuehlke.neverforget.domain;
 
-import com.zuehlke.neverforget.model.Task;
+import com.zuehlke.neverforget.domain.Task;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;

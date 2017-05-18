@@ -1,7 +1,9 @@
 package com.zuehlke.neverforget;
 
-import com.zuehlke.neverforget.model.Category;
-import com.zuehlke.neverforget.model.Task;
+import com.zuehlke.neverforget.domain.Category;
+import com.zuehlke.neverforget.domain.CategoryRepository;
+import com.zuehlke.neverforget.domain.Task;
+import com.zuehlke.neverforget.domain.TaskRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
