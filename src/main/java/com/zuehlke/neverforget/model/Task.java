@@ -1,5 +1,6 @@
 package com.zuehlke.neverforget.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -7,8 +8,10 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -47,7 +50,8 @@ public class Task {
     @ManyToOne
     private Task parent;
 
-    @OneToMany(mappedBy = "parent")
+    @JsonIgnore //XXX still necessary?
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Task> children;
 
     protected Task() {
@@ -171,6 +175,8 @@ public class Task {
                 ", wholeDay=" + wholeDay +
                 ", checked=" + checked +
                 ", category=" + category +
+                ", parent={" + (parent == null ? null : parent.getId() + "," + parent.getName()) + "}" +
+                ", children={" + (children == null || children.isEmpty() ? null : children.stream().map(child -> "{" + child.getId() + "," + child.getName() + "}").collect(Collectors.joining(", "))) + "}" +
                 '}';
     }
 

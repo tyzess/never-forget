@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 
-@RepositoryRestResource(collectionResourceRel = "tasks", path = "tasks")
+@RepositoryRestResource(collectionResourceRel = "task", path = "tasks") //XXX what does collectionResourceRel
 public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
     List<Task> findByName(@Param("name") String name);
     List<Task> findByCategory_Id(@Param("id") Long id);

@@ -1,5 +1,7 @@
 package com.zuehlke.neverforget;
 
+import com.zuehlke.neverforget.model.Category;
+import com.zuehlke.neverforget.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.LocalTime;
+import java.util.Arrays;
 
 
 @Component
@@ -22,37 +24,30 @@ public class DevDatabaseSeeder {
     CategoryRepository categoryRepository;
 
     @PostConstruct
-    public void populateSampleData() {
+    public void populateSampleData() { //TODO Seeder should not be running when testing!!!
 
-        LocalDate parsedDate = LocalDate.parse("2017-05-17");
-        log.error("------------------>" + parsedDate.getEra());
-        //TODO Seeder should not be running when testing!!!
-//        Task t1 = new Task("Buy Milk","",LocalDateTime.now(), false);
-//        Task t2 = new Task("Build House","",LocalDateTime.now(), true);
-//        Task t3 = new Task("Go to Work","",LocalDateTime.now(), false);
-//        Task t4 = new Task("Write Software","",LocalDateTime.now(), false);
-//
-//        taskRepository.save(t1);
-//        taskRepository.save(t2);
-//        taskRepository.save(t3);
-//        taskRepository.save(t4);
-//
-//        Category c = new Category("Category1", "Everything");
-//        categoryRepository.save(c);
-//
-//        // Save via task
-//        t1.setCategory(c);
-//        taskRepository.save(t1);
-//
-//        // Save via category
-//        c.getTasks().add(t1);
-//        categoryRepository.save(c);
-//
-//        log.info("---------------------");
-//        log.info("Tasks #1 has category: " + taskRepository.findOne(1L).getCategory());
-//        log.info("Category #1 has " + categoryRepository.findOne(1L).getTasks().size() + " tasks: " + c.getTasks().toString());
-//        log.info("---------------------");
-//        log.info("Populated DB with sample data");
+        Task parent   = new Task("papi", "", LocalDate.now(), LocalTime.now(), false);
+        Task son      = new Task("son", "", LocalDate.now(), LocalTime.now(), false);
+        Task daughter = new Task("daughter", "", LocalDate.now(), LocalTime.now(), false);
+
+        son.setParent(parent);
+        daughter.setParent(parent);
+        parent.setChildren(Arrays.asList(son, daughter));
+
+        taskRepository.save(parent);
+        taskRepository.save(son);
+        taskRepository.save(daughter);
+
+        Category c = new Category("Category1", "Everything");
+        categoryRepository.save(c);
+
+        son.setCategory(c);
+        taskRepository.save(son);
+
+        log.info("Father is: " + taskRepository.findOne(parent.getId()));
+        log.info("Son is: " + taskRepository.findOne(son.getId()));
+        log.info("Daughter is: " + taskRepository.findOne(daughter.getId()));
+
     }
 
 }
