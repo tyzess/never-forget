@@ -14,11 +14,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private FakeUserDetailsService userDetailsService;
+    private UserAuthenticationProvider userAuthenticationProvider;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+        auth.authenticationProvider(userAuthenticationProvider);
     }
 
     @Override
