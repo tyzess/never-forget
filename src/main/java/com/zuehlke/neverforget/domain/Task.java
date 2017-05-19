@@ -49,20 +49,27 @@ public class Task {
     @ManyToOne
     private Task parent;
 
-    @JsonIgnore //XXX still necessary?
+    @JsonIgnore
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Task> children;
 
+    @NotNull
+    @JsonIgnore
+    @ManyToOne(targetEntity = User.class)
+    private User owner;
+
     protected Task() {
+        this.checked = false;
     }
 
-    public Task(String name, String description, LocalDate dueDate, LocalTime dueTime, boolean wholeDay) {
+    public Task(String name, String description, LocalDate dueDate, LocalTime dueTime, boolean wholeDay, User owner) {
+        this();
         this.name = name;
         this.description = description;
         this.dueDate = dueDate;
         this.dueTime = dueTime;
         this.wholeDay = wholeDay;
-        this.checked = false;
+        this.owner = owner;
     }
 
     public Long getId() {
@@ -155,6 +162,14 @@ public class Task {
 
     public void setChildren(List<Task> children) {
         this.children = children;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     @Override

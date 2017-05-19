@@ -24,14 +24,16 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        log.error(authentication.toString());
         User user = userRepository.findByUsernameEquals(authentication.getName());
         String password = (String) authentication.getCredentials();
 
         if (user == null || !password.equals(user.getPassword())) {
             throw new BadCredentialsException("Incorrect login: User not found or password incorrect.");
         }
-
-        return new UsernamePasswordAuthenticationToken(user, password, getAuthorities(user));
+        Authentication auth =  new UsernamePasswordAuthenticationToken(user, password, getAuthorities(user));
+        log.error(auth.toString());
+        return auth;
     }
 
     private List<GrantedAuthority> getAuthorities(User user) {

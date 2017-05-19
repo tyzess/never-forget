@@ -28,9 +28,14 @@ public class DevDatabaseSeeder {
     @PostConstruct
     public void populateSampleData() { //TODO Seeder should not be running when testing!!!
 
-        Task parent   = new Task("papi", "", LocalDate.now(), LocalTime.now(), false);
-        Task son      = new Task("son", "", LocalDate.now(), LocalTime.now(), false);
-        Task daughter = new Task("daughter", "", LocalDate.now(), LocalTime.now(), false);
+        User u1 = new User("urs", "123", "123");
+        User u2 = new User("hans", "123", "123");
+        userRepository.save(u1);
+        userRepository.save(u2);
+
+        Task parent   = new Task("papi", "", LocalDate.now(), LocalTime.now(), false, u1);
+        Task son      = new Task("son", "", LocalDate.now(), LocalTime.now(), false, u1);
+        Task daughter = new Task("daughter", "", LocalDate.now(), LocalTime.now(), false, u2);
 
         son.setParent(parent);
         daughter.setParent(parent);
@@ -46,15 +51,11 @@ public class DevDatabaseSeeder {
         son.setCategory(c);
         taskRepository.save(son);
 
-        log.info("Father is: " + taskRepository.findOne(parent.getId()));
-        log.info("Son is: " + taskRepository.findOne(son.getId()));
-        log.info("Daughter is: " + taskRepository.findOne(daughter.getId()));
+//        log.info("Father is: " + taskRepository.findOne(parent.getId()));
+//        log.info("Son is: " + taskRepository.findOne(son.getId()));
+//        log.info("Daughter is: " + taskRepository.findOne(daughter.getId()));
 
 
-        User u1 = new User("urs", "123", "123");
-        User u2 = new User("hans", "123", "123");
-        userRepository.save(u1);
-        userRepository.save(u2);
     }
 
 }

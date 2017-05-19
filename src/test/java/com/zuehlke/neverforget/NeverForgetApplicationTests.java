@@ -1,9 +1,6 @@
 package com.zuehlke.neverforget;
 
-import com.zuehlke.neverforget.domain.Category;
-import com.zuehlke.neverforget.domain.CategoryRepository;
-import com.zuehlke.neverforget.domain.Task;
-import com.zuehlke.neverforget.domain.TaskRepository;
+import com.zuehlke.neverforget.domain.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +13,12 @@ import java.time.LocalTime;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class NeverForgetApplicationTests {
+public class NeverForgetApplicationTests { //XXX broken ;)
 
 	@Autowired
 	private TaskRepository taskRepository;
@@ -30,7 +28,7 @@ public class NeverForgetApplicationTests {
 
 	@Test
 	public void taskIsSaved() {
-		Task task = new Task("test1", "desc",  LocalDate.now(), LocalTime.now(), false);
+		Task task = new Task("test1", "desc",  LocalDate.now(), LocalTime.now(), false, mock(User.class));
 		assertThat(taskRepository.findOne(1L), is(nullValue()));
 		taskRepository.save(task);
 		assertEquals(taskRepository.findOne(1L).getName(), task.getName());
@@ -49,7 +47,7 @@ public class NeverForgetApplicationTests {
 
 	@Test
 	public void categoryCanBeAddedToTask() {
-		Task task = new Task("test1", "desc", LocalDate.now(), LocalTime.now(), false);
+		Task task = new Task("test1", "desc", LocalDate.now(), LocalTime.now(), false, mock(User.class));
 		taskRepository.save(task);
 		Category category = new Category("test1", "desc");
 		categoryRepository.save(category);

@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 
@@ -26,6 +28,17 @@ public class TaskController {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @RequestMapping(path = "/{id}", method = GET)
+    public @ResponseBody ResponseEntity<Task> findOne(@PathVariable Long id) {
+        return new ResponseEntity<Task>(taskRepository.findOne(id), HttpStatus.I_AM_A_TEAPOT);
+    }
+
+//    @RequestMapping(path = "", method = GET)
+//    public @ResponseBody ResponseEntity<Iterable<Task>> findAll() {
+//        return new ResponseEntity<Iterable<Task>>(taskRepository.findAll(), HttpStatus.I_AM_A_TEAPOT);
+//    }
+
 
 
     @RequestMapping(path = "/{id}/check", method = POST)
