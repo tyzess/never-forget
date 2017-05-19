@@ -12,7 +12,10 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    @PreAuthorize("hasRole('ROLE_BASIC')")
     User findByUsernameEquals(@Param("username") String username);
+
+    @PreAuthorize("hasRole('ROLE_BASIC')")
     List<User> findByUsername(@Param("username") String username);
 
     @Override

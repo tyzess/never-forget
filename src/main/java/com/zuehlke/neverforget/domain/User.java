@@ -16,13 +16,15 @@ public class User {
     private String passwordConfirm;
     private String role;
 
-    protected User() {}
+    protected User() {
+        this.role = "ROLE_BASIC";
+    }
 
     public User(String username, String password, String passwordConfirm) {
+        this();
         this.username = username;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
-        this.role = "ROLE_BASIC";
     }
 
     public Long getId() {

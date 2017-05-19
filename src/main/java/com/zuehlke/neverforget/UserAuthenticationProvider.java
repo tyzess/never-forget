@@ -17,7 +17,7 @@ import java.util.*;
 
 @Component
 public class UserAuthenticationProvider implements AuthenticationProvider {
-    private final static Logger log = LoggerFactory.getLogger(FakeUserDetailsService.class);
+    private final static Logger log = LoggerFactory.getLogger(UserAuthenticationProvider.class);
 
     @Autowired
     UserRepository userRepository;
