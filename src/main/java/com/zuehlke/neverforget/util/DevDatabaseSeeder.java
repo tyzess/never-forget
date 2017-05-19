@@ -1,9 +1,6 @@
 package com.zuehlke.neverforget.util;
 
-import com.zuehlke.neverforget.domain.Category;
-import com.zuehlke.neverforget.domain.CategoryRepository;
-import com.zuehlke.neverforget.domain.Task;
-import com.zuehlke.neverforget.domain.TaskRepository;
+import com.zuehlke.neverforget.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +21,9 @@ public class DevDatabaseSeeder {
 
     @Autowired
     CategoryRepository categoryRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @PostConstruct
     public void populateSampleData() { //TODO Seeder should not be running when testing!!!
@@ -50,6 +50,11 @@ public class DevDatabaseSeeder {
         log.info("Son is: " + taskRepository.findOne(son.getId()));
         log.info("Daughter is: " + taskRepository.findOne(daughter.getId()));
 
+
+        User u1 = new User("urs", "123", "123");
+        User u2 = new User("hans", "123", "123");
+        userRepository.save(u1);
+        userRepository.save(u2);
     }
 
 }

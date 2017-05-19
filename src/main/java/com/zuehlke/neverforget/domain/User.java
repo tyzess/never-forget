@@ -14,6 +14,16 @@ public class User {
 
     private String password;
     private String passwordConfirm;
+    private String role;
+
+    protected User() {}
+
+    public User(String username, String password, String passwordConfirm) {
+        this.username = username;
+        this.password = password;
+        this.passwordConfirm = passwordConfirm;
+        this.role = "ROLE_BASIC";
+    }
 
     public Long getId() {
         return id;
@@ -48,4 +58,7 @@ public class User {
         this.passwordConfirm = passwordConfirm;
     }
 
+    public String getRole() {
+        return role;
+    }
 }
