@@ -20,7 +20,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @CreationTimestamp
+    @CreationTimestamp //XXX or maybe rather use http://stackoverflow.com/questions/5257709/how-to-autogenerate-created-or-modified-timestamp-field
     private Date created;
 
     @UpdateTimestamp
@@ -50,7 +50,7 @@ public class Task {
     private Task parent;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Task> children;
 
     @NotNull

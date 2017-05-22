@@ -17,14 +17,12 @@ import java.util.*;
 
 @Component
 public class UserAuthenticationProvider implements AuthenticationProvider {
-    private final static Logger log = LoggerFactory.getLogger(UserAuthenticationProvider.class);
 
     @Autowired
     UserRepository userRepository;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        log.error(authentication.toString());
         User user = userRepository.findByUsernameEquals(authentication.getName());
         String password = (String) authentication.getCredentials();
 
@@ -32,7 +30,6 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Incorrect login: User not found or password incorrect.");
         }
         Authentication auth =  new UsernamePasswordAuthenticationToken(user, password, getAuthorities(user));
-        log.error(auth.toString());
         return auth;
     }
 
