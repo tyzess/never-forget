@@ -38,7 +38,7 @@ public class NeverForgetApplicationTests { //XXX broken ;)
 
 	@Test
 	public void categoryIsSaved() {
-		Category category = new Category("test1", "desc");
+		Category category = new Category("test1", "desc", mock(User.class));
 		assertThat(categoryRepository.findOne(1L), is(nullValue()));
 		categoryRepository.save(category);
 		assertEquals(categoryRepository.findOne(1L).getName(), category.getName());
@@ -49,7 +49,7 @@ public class NeverForgetApplicationTests { //XXX broken ;)
 	public void categoryCanBeAddedToTask() {
 		Task task = new Task("test1", "desc", LocalDate.now(), LocalTime.now(), false, mock(User.class));
 		taskRepository.save(task);
-		Category category = new Category("test1", "desc");
+		Category category = new Category("test1", "desc", mock(User.class));
 		categoryRepository.save(category);
 
 		assertThat(taskRepository.findOne(1L).getCategory(), nullValue());

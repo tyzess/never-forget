@@ -1,5 +1,6 @@
 package com.zuehlke.neverforget.controller;
 
+import com.zuehlke.neverforget.service.CategoryService;
 import com.zuehlke.neverforget.service.TaskService;
 import com.zuehlke.neverforget.domain.*;
 import org.slf4j.Logger;
@@ -19,13 +20,10 @@ public class TaskController {
     private final static Logger log = LoggerFactory.getLogger(TaskController.class);
 
     @Autowired
-    private TaskRepository taskRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private CategoryService categoryService;
 
 
     // CRUD Routes
@@ -64,78 +62,59 @@ public class TaskController {
 
     // Special routes
 
-    @PostAuthorize("returnObject.owner.id == principal.id")
     @PostMapping("/{id}/check")
     public ResponseEntity<Task> checkTask(@PathVariable Long id) {
-        Task t = taskRepository.findOne(id);
-        if(t != null) {
-            t.setChecked(true);
-            taskRepository.save(t);
-            return new ResponseEntity<>(t, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Task task = taskService.findOne(id);
+        if(task == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        task = taskService.setChecked(task, true);
+        return new ResponseEntity<>(task, HttpStatus.OK);
+
     }
 
-    @PostAuthorize("returnObject.owner.id == principal.id")
     @PostMapping("/{id}/uncheck")
     public ResponseEntity<Task> uncheckTask(@PathVariable Long id) {
-        Task t = taskRepository.findOne(id);
-        if(t != null) {
-            t.setChecked(false);
-            taskRepository.save(t);
-            return new ResponseEntity<>(t, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Task task = taskService.findOne(id);
+        if(task == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        task = taskService.setChecked(task, false);
+        return new ResponseEntity<>(task, HttpStatus.OK);
     }
 
-    @PostAuthorize("returnObject.owner.id == principal.id") //XXX own category as well
     @GetMapping("/{id}/category")
     public ResponseEntity<Category> getTaskCategory(@PathVariable Long id) {
-        Task task = taskRepository.findOne(id);
-        if(task != null) {
-            Category category = task.getCategory();
-            return new ResponseEntity<>(category, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Task task = taskService.findOne(id);
+        if(task == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(task.getCategory(), HttpStatus.OK);
     }
 
-    @PostAuthorize("returnObject.owner.id == principal.id") //XXX own category as well
-    @PostMapping("/{id}/category")
+    @PostMapping("/{id}/category") //XXX how to set no category? null-category vs empty/default-category
     public ResponseEntity<Task> setTaskCategory(@RequestParam(name = "category_id") Long category_id, @PathVariable Long id) {
-        Task task = taskRepository.findOne(id);
-        Category category = categoryRepository.findOne(category_id);
-        if(task != null || category != null) {
-            task.setCategory(category);
-            taskRepository.save(task);
-            return new ResponseEntity<>(task, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Task task = taskService.findOne(id);
+        Category category = categoryService.findOne(category_id);
+        if(task == null || category == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        task = taskService.setCategory(task, category);
+        return new ResponseEntity<>(task, HttpStatus.OK);
     }
 
-    @PostAuthorize("returnObject.owner.id == principal.id") //XXX own parent as well
     @GetMapping("/{id}/parent")
     public ResponseEntity<Task> getTaskParent(@PathVariable Long id) {
-        Task task = taskRepository.findOne(id);
-        if(task != null) {
-            Task parent = task.getParent();
-            return new ResponseEntity<>(parent, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Task task = taskService.findOne(id);
+        if(task == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(task.getParent(), HttpStatus.OK);
     }
 
-    @PostAuthorize("returnObject.owner.id == principal.id") //XXX own parent as well
     @PostMapping("/{id}/parent")
     public ResponseEntity<Task> setTaskParent(@RequestParam(name = "parent_id") Long parent_id, @PathVariable Long id) {
-        Task task = taskRepository.findOne(id);
-        Task parent = taskRepository.findOne(parent_id);
-        if(task != null || parent != null) {
-            task.setParent(parent);
-            parent.getChildren().add(task);
-            taskRepository.save(task);
-            taskRepository.save(parent);
-            return new ResponseEntity<>(task, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Task task = taskService.findOne(id);
+        Task parent = taskService.findOne(parent_id);
+        if(task == null || parent == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        task = taskService.setParent(task, parent);
+        return new ResponseEntity<>(task, HttpStatus.OK);
     }
 
     // Search routes

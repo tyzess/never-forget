@@ -45,7 +45,7 @@ public class DevDatabaseSeeder {
         taskRepository.save(son);
         taskRepository.save(daughter);
 
-        Category c = new Category("Category1", "Everything");
+        Category c = new Category("Category1", "Everything", u1);
         categoryRepository.save(c);
 
         son.setCategory(c);

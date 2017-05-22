@@ -1,6 +1,8 @@
 package com.zuehlke.neverforget.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -19,12 +21,18 @@ public class Category {
 
     private String description;
 
+    @NotNull
+    @JsonIgnore
+    @ManyToOne(targetEntity = User.class)
+    private User owner;
+
     protected Category() {
     }
 
-    public Category(String name, String description) {
+    public Category(String name, String description, User owner) {
         this.name = name;
         this.description = description;
+        this.owner = owner;
     }
 
     public Long getId() {
@@ -45,6 +53,14 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     @Override

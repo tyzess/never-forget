@@ -1,5 +1,6 @@
 package com.zuehlke.neverforget.service;
 
+import com.zuehlke.neverforget.domain.Category;
 import com.zuehlke.neverforget.domain.Task;
 import com.zuehlke.neverforget.domain.TaskRepository;
 import com.zuehlke.neverforget.domain.User;
@@ -44,8 +45,7 @@ public class TaskService {
         currentTask.setDueTime(task.getDueTime());
         currentTask.setWholeDay(task.isWholeDay());
         currentTask.setCategory(task.getCategory());
-        taskRepository.save(currentTask);
-        return currentTask;
+        return taskRepository.save(currentTask);
     }
 
     public void deleteTask(Long id) {
@@ -54,4 +54,22 @@ public class TaskService {
             task.setParent(null);
         taskRepository.delete(id);
     }
+
+    public Task setChecked(Task task, boolean checked) {
+        task.setChecked(checked);
+        return taskRepository.save(task);
+    }
+
+    public Task setCategory(Task task, Category category) {
+        task.setCategory(category);
+        return taskRepository.save(task);
+    }
+
+    public Task setParent(Task task, Task parent) {
+        task.setParent(parent);
+        parent.getChildren().add(task);
+        taskRepository.save(parent);
+        return taskRepository.save(task);
+    }
+
 }

@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    User findByUsernameEquals(@Param("username") String username);
+    User findByUsernameEquals(@Param("username") String username); //XXX Security issue!
 }
