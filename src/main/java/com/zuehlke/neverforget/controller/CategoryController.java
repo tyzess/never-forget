@@ -25,7 +25,6 @@ public class CategoryController {
     @GetMapping("/")
     public ResponseEntity<Iterable<Category>> getTasks() {
         return new ResponseEntity<>(categoryService.findAll(), HttpStatus.OK);
-
     }
 
     @GetMapping("/{id}")
@@ -38,14 +37,14 @@ public class CategoryController {
 
     @PostMapping()
     public ResponseEntity<Category> createTask(@RequestBody Category category) {
-        categoryService.createCategory(category);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        Category createdCategory = categoryService.createCategory(category);
+        return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Category> updateTask(@PathVariable Long id, @RequestBody Category category) {
-        categoryService.updateCategory(id, category);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Category updatedCategory = categoryService.updateCategory(id, category);
+        return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -53,4 +52,5 @@ public class CategoryController {
         categoryService.deleteCategory(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }

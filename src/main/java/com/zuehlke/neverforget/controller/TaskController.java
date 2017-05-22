@@ -44,14 +44,14 @@ public class TaskController {
 
     @PostMapping()
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        taskService.createTask(task);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        Task createdTask = taskService.createTask(task);
+        return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task) {
-        taskService.updateTask(id, task);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Task updatedTask = taskService.updateTask(id, task);
+        return new ResponseEntity<>(updatedTask, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -97,7 +97,7 @@ public class TaskController {
         if(task == null || category == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         task = taskService.setCategory(task, category);
-        return new ResponseEntity<>(task, HttpStatus.OK);
+        return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}/parent")
@@ -108,6 +108,7 @@ public class TaskController {
         return new ResponseEntity<>(task.getParent(), HttpStatus.OK);
     }
 
+    //XXX don't allow circular relations!
     @PostMapping("/{id}/parent")
     public ResponseEntity<Task> setTaskParent(@RequestParam(name = "parent_id") Long parent_id, @PathVariable Long id) {
         Task task = taskService.findOne(id);
@@ -115,7 +116,7 @@ public class TaskController {
         if(task == null || parent == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         task = taskService.setParent(task, parent);
-        return new ResponseEntity<>(task, HttpStatus.OK);
+        return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 
 
