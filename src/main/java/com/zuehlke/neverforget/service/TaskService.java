@@ -32,9 +32,9 @@ public class TaskService {
         return taskRepository.findOne(id);
     }
 
-    public void createTask(Task task) {
+    public Task createTask(Task task) {
         task.setOwner((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        taskRepository.save(task);
+        return taskRepository.save(task);
     }
 
     @PostAuthorize("returnObject.owner.username == principal.username")

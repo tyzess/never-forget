@@ -60,6 +60,7 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+
     // Special routes
 
     @PostMapping("/{id}/check")
@@ -117,11 +118,12 @@ public class TaskController {
         return new ResponseEntity<>(task, HttpStatus.OK);
     }
 
+
     // Search routes
 
-    @GetMapping()
-    public List<Task> findByName(String name) {
-        return null;
-    }
+//    @GetMapping()
+//    public List<Task> findByName(String name) {
+//        return null;
+//    }
 
 }
