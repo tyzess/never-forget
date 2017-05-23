@@ -7,6 +7,8 @@ import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class CategoryService {
@@ -15,7 +17,7 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
 
     @PostFilter("filterObject.owner.username == authentication.principal.username")
-    public Iterable<Category> findAll() {
+    public List<Category> findAll() {
         return categoryRepository.findAll();
     }
 

@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Component
@@ -28,34 +29,59 @@ public class DevDatabaseSeeder {
     @PostConstruct
     public void populateSampleData() { //TODO Seeder should not be running when testing!!!
 
+
+        // Create users
+
         User u1 = new User("urs", "123", "123");
-        User u2 = new User("hans", "123", "123");
+        User u2 = new User("guest", "123", "123");
+
         userRepository.save(u1);
         userRepository.save(u2);
 
-        Task parent   = new Task("papi", "", LocalDate.now(), LocalTime.now(), false, u1);
-        Task son      = new Task("son", "", LocalDate.now(), LocalTime.now(), false, u1);
-        Task daughter = new Task("daughter", "", LocalDate.now(), LocalTime.now(), false, u2);
 
-        son.setParent(parent);
-        daughter.setParent(parent);
-        parent.setChildren(Arrays.asList(son, daughter));
+        // Create categories
 
-        taskRepository.save(parent);
-        taskRepository.save(son);
-        taskRepository.save(daughter);
+        Category c1 = new Category("Shopping", "Buying stuff is great!", u1);
+        Category c2 = new Category("Fitness", "", u1);
 
-        Category c = new Category("Category1", "Everything", u1);
-        categoryRepository.save(c);
-
-        son.setCategory(c);
-        taskRepository.save(son);
-
-//        log.info("Father is: " + taskRepository.findOne(parent.getId()));
-//        log.info("Son is: " + taskRepository.findOne(son.getId()));
-//        log.info("Daughter is: " + taskRepository.findOne(daughter.getId()));
+        categoryRepository.save(c1);
+        categoryRepository.save(c2);
 
 
+        // Create tasks
+
+        List<Task> tasks = new ArrayList<>();
+        Task t1, t1s1, t1s2, t1s3;
+        Task t2, t2s1;
+        Task t3, t3s1;
+        Task t4;
+
+        tasks.add(t1 = new Task("Groceries", "", LocalDate.now(), LocalTime.now().plusHours(2L), false, u1));
+        tasks.add(t1s1 = new Task("Buy Milk", "", null, null, false, u1));
+        tasks.add(t1s2 = new Task("Buy Chocolate", "", null, null, false, u2));
+        tasks.add(t1s3 = new Task("Buy Chocolate", "", null, null, false, u2));
+
+        t1.setCategory(c1);
+        t1s1.setParent(t1);
+        t1s2.setParent(t1);
+        t1s3.setParent(t1);
+
+        tasks.add(t2 = new Task("Lose some weight", "", LocalDate.now().plusDays(5L), LocalTime.NOON, false, u1));
+        tasks.add(t2s1 = new Task("Go running", "", null, null, false, u1));
+
+        t2.setCategory(c2);
+        t2s1.setParent(t2);
+
+        tasks.add(t3 = new Task("Buy new Clothes", "", LocalDate.now().plusDays(5L), LocalTime.NOON, false, u1));
+        tasks.add(t3s1 = new Task("4 T-Shirts", "", null, null, false, u1));
+
+        t3.setCategory(c1);
+        t3s1.setParent(t3);
+
+        tasks.add(t4 = new Task("Talk with Mr. Trump", "", LocalDate.now().plusDays(5L), LocalTime.NOON, false, u1));
+
+        for(Task task : tasks)
+            taskRepository.save(task);
     }
 
 }

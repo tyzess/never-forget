@@ -23,7 +23,7 @@ public class TaskService {
     private TaskRepository taskRepository;
 
     @PostFilter("filterObject.owner.username == authentication.principal.username")
-    public Iterable<Task> findAll() {
+    public List<Task> findAll() {
         return taskRepository.findAll();
     }
 
@@ -34,6 +34,7 @@ public class TaskService {
 
     public Task createTask(Task task) {
         task.setOwner((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        task.setCategory(null);
         return taskRepository.save(task);
     }
 
@@ -44,7 +45,6 @@ public class TaskService {
         currentTask.setDueDate(task.getDueDate());
         currentTask.setDueTime(task.getDueTime());
         currentTask.setWholeDay(task.isWholeDay());
-        currentTask.setCategory(task.getCategory());
         return taskRepository.save(currentTask);
     }
 
@@ -67,8 +67,8 @@ public class TaskService {
 
     public Task setParent(Task task, Task parent) {
         task.setParent(parent);
-        parent.getChildren().add(task);
-        taskRepository.save(parent);
+        //parent.getChildren().add(task);
+        //taskRepository.save(parent);
         return taskRepository.save(task);
     }
 

@@ -9,8 +9,6 @@ import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Entity
@@ -48,10 +46,6 @@ public class Task {
 
     @ManyToOne
     private Task parent;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private List<Task> children;
 
     @NotNull
     @JsonIgnore
@@ -156,14 +150,6 @@ public class Task {
         this.parent = parent;
     }
 
-    public List<Task> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<Task> children) {
-        this.children = children;
-    }
-
     public User getOwner() {
         return owner;
     }
@@ -186,7 +172,6 @@ public class Task {
                 ", checked=" + checked +
                 ", category=" + category +
                 ", parent={" + (parent == null ? null : parent.getId() + "," + parent.getName()) + "}" +
-                ", children={" + (children == null || children.isEmpty() ? null : children.stream().map(child -> "{" + child.getId() + "," + child.getName() + "}").collect(Collectors.joining(", "))) + "}" +
                 '}';
     }
 

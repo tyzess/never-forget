@@ -1,6 +1,6 @@
 package com.zuehlke.neverforget.domain;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PostFilter;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 //@RepositoryRestResource(exported = false)
-public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
+public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @PostFilter("filterObject.owner.username == authentication.principal.username")
     List<Task> findAllByName(@Param("name") String name);

@@ -3,10 +3,14 @@ package com.zuehlke.neverforget.controller;
 
 import com.zuehlke.neverforget.domain.Category;
 import com.zuehlke.neverforget.service.CategoryService;
+import com.zuehlke.neverforget.service.HALService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,38 +23,42 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private HALService halService;
 
+
+    ////////////////////////////////////
     //CRUD Routes
 
     @GetMapping("/")
-    public ResponseEntity<Iterable<Category>> getTasks() {
-        return new ResponseEntity<>(categoryService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Resources<Resource<Category>>> getCategories() {
+        return ResponseEntity.ok(halService.categoryToResource(categoryService.findAll()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getTask(@PathVariable Long id) {
+    public ResponseEntity<Resource<Category>> getCategory(@PathVariable Long id) {
         Category category = categoryService.findOne(id);
         if (category == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(category, HttpStatus.OK);
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(halService.categoryToResource(category));
     }
 
     @PostMapping()
-    public ResponseEntity<Category> createTask(@RequestBody Category category) {
+    public ResponseEntity<Resource<Category>> createCategory(@RequestBody Category category) {
         Category createdCategory = categoryService.createCategory(category);
-        return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
+        return ResponseEntity.created(halService.getUriFromCategory(createdCategory)).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> updateTask(@PathVariable Long id, @RequestBody Category category) {
-        Category updatedCategory = categoryService.updateCategory(id, category);
-        return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
+    public ResponseEntity<Resource<Category>> updateCategory(@PathVariable Long id, @RequestBody Category category) {
+        categoryService.updateCategory(id, category);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Category> deleteTask(@PathVariable Long id) {
+    public ResponseEntity<Resource<Category>> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
 }

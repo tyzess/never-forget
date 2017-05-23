@@ -1,17 +1,16 @@
 package com.zuehlke.neverforget.controller;
 
 import com.zuehlke.neverforget.service.CategoryService;
+import com.zuehlke.neverforget.service.HALService;
 import com.zuehlke.neverforget.service.TaskService;
 import com.zuehlke.neverforget.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -25,106 +24,101 @@ public class TaskController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private HALService halService;
 
+
+    ////////////////////////////////////
     // CRUD Routes
 
     @GetMapping("/")
-    public ResponseEntity<Iterable<Task>> getTasks() {
-        return new ResponseEntity<>(taskService.findAll(), HttpStatus.OK);
-
+    public ResponseEntity<Resources<Resource<Task>>> getTasks() {
+        return ResponseEntity.ok(halService.taskToResource(taskService.findAll()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Task> getTask(@PathVariable Long id) {
+    public ResponseEntity<Resource<Task>> getTask(@PathVariable Long id) {
         Task task = taskService.findOne(id);
         if (task == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(task, HttpStatus.OK);
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(halService.taskToResource(task));
     }
 
-    @PostMapping()
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+    @PostMapping("/")
+    public ResponseEntity<Resource<Task>> createTask(@RequestBody Task task) {
         Task createdTask = taskService.createTask(task);
-        return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
+        return ResponseEntity.created(halService.getUriFromTask(createdTask)).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task) {
-        Task updatedTask = taskService.updateTask(id, task);
-        return new ResponseEntity<>(updatedTask, HttpStatus.OK);
+    public ResponseEntity<Resource<Task>> updateTask(@PathVariable Long id, @RequestBody Task task) {
+        taskService.updateTask(id, task);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Task> deleteTask(@PathVariable Long id) {
+    public ResponseEntity<Resource<Task>> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
 
+    ////////////////////////////////////
     // Special routes
 
     @PostMapping("/{id}/check")
-    public ResponseEntity<Task> checkTask(@PathVariable Long id) {
+    public ResponseEntity<Resource<Task>> checkTask(@PathVariable Long id) {
         Task task = taskService.findOne(id);
         if(task == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        task = taskService.setChecked(task, true);
-        return new ResponseEntity<>(task, HttpStatus.OK);
+            return ResponseEntity.notFound().build();
+        taskService.setChecked(task, true);
+        return ResponseEntity.ok().build();
 
     }
 
     @PostMapping("/{id}/uncheck")
-    public ResponseEntity<Task> uncheckTask(@PathVariable Long id) {
+    public ResponseEntity<Resource<Task>> uncheckTask(@PathVariable Long id) {
         Task task = taskService.findOne(id);
         if(task == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        task = taskService.setChecked(task, false);
-        return new ResponseEntity<>(task, HttpStatus.OK);
+            return ResponseEntity.notFound().build();
+        taskService.setChecked(task, false);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}/category")
-    public ResponseEntity<Category> getTaskCategory(@PathVariable Long id) {
+    public ResponseEntity<Resource<Category>> getTaskCategory(@PathVariable Long id) {
         Task task = taskService.findOne(id);
         if(task == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(task.getCategory(), HttpStatus.OK);
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(halService.categoryToResource(task.getCategory()));
     }
 
     @PostMapping("/{id}/category") //XXX how to set no category? null-category vs empty/default-category
-    public ResponseEntity<Task> setTaskCategory(@RequestParam(name = "category_id") Long category_id, @PathVariable Long id) {
+    public ResponseEntity<Resource<Task>> setTaskCategory(@RequestParam(name = "category_id") Long category_id, @PathVariable Long id) {
         Task task = taskService.findOne(id);
         Category category = categoryService.findOne(category_id);
         if(task == null || category == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         task = taskService.setCategory(task, category);
-        return new ResponseEntity<>(task, HttpStatus.CREATED);
+        return ResponseEntity.created(halService.getUriFromTask(task)).build();
     }
 
     @GetMapping("/{id}/parent")
-    public ResponseEntity<Task> getTaskParent(@PathVariable Long id) {
+    public ResponseEntity<Resource<Task>> getTaskParent(@PathVariable Long id) {
         Task task = taskService.findOne(id);
         if(task == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(task.getParent(), HttpStatus.OK);
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(halService.taskToResource(task.getParent()));
     }
 
     //XXX don't allow circular relations!
     @PostMapping("/{id}/parent")
-    public ResponseEntity<Task> setTaskParent(@RequestParam(name = "parent_id") Long parent_id, @PathVariable Long id) {
+    public ResponseEntity<Resource<Task>> setTaskParent(@RequestParam(name = "parent_id") Long parent_id, @PathVariable Long id) {
         Task task = taskService.findOne(id);
         Task parent = taskService.findOne(parent_id);
         if(task == null || parent == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         task = taskService.setParent(task, parent);
-        return new ResponseEntity<>(task, HttpStatus.CREATED);
+        return ResponseEntity.created(halService.getUriFromTask(task)).build();
     }
-
-
-    // Search routes
-
-//    @GetMapping()
-//    public List<Task> findByName(String name) {
-//        return null;
-//    }
-
 }
