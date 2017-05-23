@@ -44,7 +44,7 @@ public class Task {
     @ManyToOne
     private Category category;
 
-    @ManyToOne
+    @ManyToOne //XXX don't allow circular references!!!!
     private Task parent;
 
     @NotNull

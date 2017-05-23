@@ -55,11 +55,12 @@ public class DevDatabaseSeeder {
         Task t2, t2s1;
         Task t3, t3s1;
         Task t4;
+        Task t5;
 
         tasks.add(t1 = new Task("Groceries", "", LocalDate.now(), LocalTime.now().plusHours(2L), false, u1));
         tasks.add(t1s1 = new Task("Buy Milk", "", null, null, false, u1));
-        tasks.add(t1s2 = new Task("Buy Chocolate", "", null, null, false, u2));
-        tasks.add(t1s3 = new Task("Buy Chocolate", "", null, null, false, u2));
+        tasks.add(t1s2 = new Task("Buy Chocolate", "", null, null, false, u1));
+        tasks.add(t1s3 = new Task("Buy Chocolate", "", null, null, false, u1));
 
         t1.setCategory(c1);
         t1s1.setParent(t1);
@@ -79,6 +80,8 @@ public class DevDatabaseSeeder {
         t3s1.setParent(t3);
 
         tasks.add(t4 = new Task("Talk with Mr. Trump", "", LocalDate.now().plusDays(5L), LocalTime.NOON, false, u1));
+
+        tasks.add(t5 = new Task("Not my Task ;)", "", LocalDate.now().plusDays(5L), LocalTime.NOON, false, u2));
 
         for(Task task : tasks)
             taskRepository.save(task);

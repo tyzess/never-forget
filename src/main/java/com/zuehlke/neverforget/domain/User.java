@@ -1,5 +1,7 @@
 package com.zuehlke.neverforget.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,8 +14,13 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @JsonIgnore
     private String password;
+
+    @JsonIgnore
     private String passwordConfirm;
+
+    @JsonIgnore
     private String role;
 
     protected User() {
