@@ -5,11 +5,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.LocalDate;
 import java.util.List;
 
-
+@CrossOrigin
 @Repository
 //@RepositoryRestResource(exported = false)
 public interface TaskRepository extends JpaRepository<Task, Long> {
