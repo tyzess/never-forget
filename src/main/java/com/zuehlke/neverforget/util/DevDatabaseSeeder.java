@@ -62,6 +62,7 @@ public class DevDatabaseSeeder {
         tasks.add(t1s2 = new Task("Buy Chocolate", "", null, null, false, u1));
         tasks.add(t1s3 = new Task("Buy Chocolate", "", null, null, false, u1));
 
+        t1.setChecked(true);
         t1.setCategory(c1);
         t1s1.setParent(t1);
         t1s2.setParent(t1);
