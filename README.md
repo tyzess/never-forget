@@ -36,11 +36,11 @@ Thanks to the following dependency, all LocalDateTime, LocalDate and LocalTime c
 
 ## MySQL container
 ~~~
-docker run --name demo-mysql -e MYSQL_ROOT_PASSWORD=ThePassword -e MYSQL_DATABASE=db_example -e MYSQL_USER=springuser -e MYSQL_PASSWORD=ThePassword -d mysql:5.6
+docker run --name never-forget-mysql -e MYSQL_ROOT_PASSWORD=ThePassword -e MYSQL_DATABASE=db_example -e MYSQL_USER=springuser -e MYSQL_PASSWORD=ThePassword -d mysql:5.6
 ~~~
 
 
 ## never-forget container
 ~~~
-docker run uzysset:never-forget
+docker run -p 8080:8080 --name never-forget --link never-forget-mysql:mysql -d uzysset/never-forget:latest
 ~~~
