@@ -24,7 +24,7 @@ public class TaskService {
 
     @PostFilter("filterObject.owner.username == authentication.principal.username")
     public List<Task> findAll() {
-        return taskRepository.findAll();
+        return taskRepository.findAllByParentIsNull();
     }
 
     @PostAuthorize("returnObject == null or returnObject.owner.username == principal.username")
@@ -48,28 +48,45 @@ public class TaskService {
         return taskRepository.save(currentTask);
     }
 
+    // TODO Check that all removed tasks are owned by current user
     public void deleteTask(Long id) {
-        List<Task> tasks = taskRepository.findAllByParent_Id(id);
-        for(Task task : tasks)
-            task.setParent(null);
-        taskRepository.delete(id);
+        List<Task> children = taskRepository.findAllByParent_Id(id);
+        for (Task child : children) {
+            deleteId(child.getId());
+            deleteTask(child.getId());
+        }
+        deleteId(id);
     }
 
+    private void deleteId(Long id) {
+        if (taskRepository.exists(id))
+            taskRepository.delete(id);
+    }
+
+    // TODO Check that only owner can change checked
     public Task setChecked(Task task, boolean checked) {
         task.setChecked(checked);
         return taskRepository.save(task);
     }
 
+    // TODO Check that only owner can set the category
+    // TODO Check that category is owned by current user
     public Task setCategory(Task task, Category category) {
         task.setCategory(category);
         return taskRepository.save(task);
     }
 
+    // TODO same as with setCategroy(...)
     public Task setParent(Task task, Task parent) {
         task.setParent(parent);
         //parent.getChildren().add(task);
         //taskRepository.save(parent);
         return taskRepository.save(task);
+    }
+
+    // TODO Check ownership
+    public List<Task> getTaskChildren(Long id) {
+        return taskRepository.findAllByParent_Id(id);
     }
 
 }

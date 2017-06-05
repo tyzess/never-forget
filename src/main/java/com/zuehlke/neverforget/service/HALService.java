@@ -49,7 +49,8 @@ public class HALService {
         Link selfLink = linkTo(entity).withSelfRel();
         Link category = linkTo(methodOn(TaskController.class).getTaskCategory(task.getId())).withRel("category");
         Link parent = linkTo(methodOn(TaskController.class).getTaskParent(task.getId())).withRel("parent");
-        return new Resource<>(task, selfLink, category, parent);
+        Link children = linkTo(methodOn(TaskController.class).getTaskChildren(task.getId())).withRel("children");
+        return new Resource<>(task, selfLink, category, parent, children);
     }
 
     public Resources<Resource<Category>> categoryToResource(List<Category> categories) {
