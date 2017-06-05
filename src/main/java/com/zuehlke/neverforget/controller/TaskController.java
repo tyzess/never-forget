@@ -12,6 +12,9 @@ import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @CrossOrigin
 @RestController
@@ -94,7 +97,8 @@ public class TaskController {
         return ResponseEntity.ok(halService.categoryToResource(task.getCategory()));
     }
 
-    @PostMapping("/{id}/category") //XXX how to set no category? null-category vs empty/default-category
+    // TODO Implement a way how to set no category? null-category vs empty/default-category
+    @PostMapping("/{id}/category")
     public ResponseEntity<Resource<Task>> setTaskCategory(@RequestParam(name = "category_id") Long category_id, @PathVariable Long id) {
         Task task = taskService.findOne(id);
         Category category = categoryService.findOne(category_id);
@@ -112,7 +116,7 @@ public class TaskController {
         return ResponseEntity.ok(halService.taskToResource(task.getParent()));
     }
 
-    //XXX don't allow circular relations!
+    // TODO don't allow circular relations!
     @PostMapping("/{id}/parent")
     public ResponseEntity<Resource<Task>> setTaskParent(@RequestParam(name = "parent_id") Long parent_id, @PathVariable Long id) {
         Task task = taskService.findOne(id);
@@ -121,5 +125,14 @@ public class TaskController {
             return ResponseEntity.notFound().build();
         task = taskService.setParent(task, parent);
         return ResponseEntity.created(halService.getUriFromTask(task)).build();
+    }
+
+    @GetMapping("/{id}/children")
+    public ResponseEntity<Resources<Resource<Task>>> getTaskChildren(@PathVariable Long id) {
+        Task task = taskService.findOne(id);
+        if (task == null)
+            return ResponseEntity.notFound().build();
+        List<Task> tasks = taskService.getTaskChildren(task.getId());
+        return ResponseEntity.ok(halService.taskToResource(tasks));
     }
 }
