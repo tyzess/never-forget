@@ -1,4 +1,4 @@
-package com.zuehlke.neverforget;
+package com.zuehlke.neverforget.config;
 
 
 import com.zuehlke.neverforget.domain.Category;

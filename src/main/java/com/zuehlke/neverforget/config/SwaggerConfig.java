@@ -1,4 +1,4 @@
-package com.zuehlke.neverforget.util;
+package com.zuehlke.neverforget.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

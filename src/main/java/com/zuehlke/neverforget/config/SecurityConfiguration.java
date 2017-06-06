@@ -1,5 +1,7 @@
-package com.zuehlke.neverforget;
+package com.zuehlke.neverforget.config;
 
+import com.zuehlke.neverforget.SecurityEvaluationContextExtension;
+import com.zuehlke.neverforget.UserAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
