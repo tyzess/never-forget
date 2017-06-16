@@ -116,7 +116,6 @@ public class TaskController {
         return ResponseEntity.ok(halService.taskToResource(task.getParent()));
     }
 
-    // TODO don't allow circular relations!
     @PostMapping("/{id}/parent")
     public ResponseEntity<Resource<Task>> setTaskParent(@RequestParam(name = "parent_id") Long parent_id, @PathVariable Long id) {
         Task task = taskService.findOne(id);

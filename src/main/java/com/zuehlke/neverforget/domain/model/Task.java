@@ -32,8 +32,17 @@ public class Task extends BaseEntity {
     @ManyToOne
     private Category category;
 
-    @ManyToOne //XXX don't allow circular references!!!!
+    @ManyToOne
     private Task parent;
+
+    @PrePersist
+    @PreUpdate
+    private void validateParentRelation() {
+        if(this.parent != null && this.parent.parent == this)
+            throw new IllegalArgumentException("Task is not allowed to have circular parent relationship");
+        if(this.parent != null && this.parent == this)
+            throw new IllegalArgumentException("Task cannot be a parent of itself");
+    }
 
     @NotNull
     @JsonIgnore

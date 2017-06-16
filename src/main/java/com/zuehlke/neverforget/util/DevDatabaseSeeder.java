@@ -30,8 +30,7 @@ public class DevDatabaseSeeder {
     UserRepository userRepository;
 
     @PostConstruct
-    public void populateSampleData() { //TODO Seeder should not be running when testing!!!
-
+    public void populateSampleData() {
 
         // Create users
 
