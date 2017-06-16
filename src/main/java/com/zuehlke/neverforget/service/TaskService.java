@@ -1,10 +1,10 @@
 package com.zuehlke.neverforget.service;
 
-import com.zuehlke.neverforget.domain.Category;
-import com.zuehlke.neverforget.domain.Task;
-import com.zuehlke.neverforget.domain.TaskRepository;
-import com.zuehlke.neverforget.domain.User;
 import com.zuehlke.neverforget.controller.TaskController;
+import com.zuehlke.neverforget.domain.TaskRepository;
+import com.zuehlke.neverforget.domain.model.Category;
+import com.zuehlke.neverforget.domain.model.Task;
+import com.zuehlke.neverforget.domain.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +42,7 @@ public class TaskService {
     public Task updateTask(Long id, Task task) {
         Task currentTask = taskRepository.findOne(id);
         currentTask.setName(task.getName());
+        currentTask.setDescription(task.getDescription());
         currentTask.setDueDate(task.getDueDate());
         currentTask.setDueTime(task.getDueTime());
         currentTask.setWholeDay(task.isWholeDay());
@@ -79,8 +80,6 @@ public class TaskService {
     // TODO same as with setCategroy(...)
     public Task setParent(Task task, Task parent) {
         task.setParent(parent);
-        //parent.getChildren().add(task);
-        //taskRepository.save(parent);
         return taskRepository.save(task);
     }
 

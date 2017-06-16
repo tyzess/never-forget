@@ -1,7 +1,7 @@
 package com.zuehlke.neverforget;
 
 import com.zuehlke.neverforget.domain.*;
-import org.slf4j.*;
+import com.zuehlke.neverforget.domain.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

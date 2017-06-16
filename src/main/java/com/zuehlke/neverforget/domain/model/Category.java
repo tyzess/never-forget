@@ -1,4 +1,4 @@
-package com.zuehlke.neverforget.domain;
+package com.zuehlke.neverforget.domain.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,11 +9,7 @@ import javax.validation.constraints.Size;
 
 
 @Entity
-public class Category {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Category extends BaseEntity {
 
     @NotNull
     @Size(min = 1)

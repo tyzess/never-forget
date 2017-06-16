@@ -1,9 +1,10 @@
 package com.zuehlke.neverforget.controller;
 
+import com.zuehlke.neverforget.domain.model.Category;
+import com.zuehlke.neverforget.domain.model.Task;
 import com.zuehlke.neverforget.service.CategoryService;
 import com.zuehlke.neverforget.service.HALService;
 import com.zuehlke.neverforget.service.TaskService;
-import com.zuehlke.neverforget.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

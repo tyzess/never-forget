@@ -1,6 +1,8 @@
 package com.zuehlke.neverforget.service;
 
 import com.zuehlke.neverforget.domain.*;
+import com.zuehlke.neverforget.domain.model.Category;
+import com.zuehlke.neverforget.domain.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;

@@ -1,28 +1,16 @@
-package com.zuehlke.neverforget.domain;
+package com.zuehlke.neverforget.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 
 
 @Entity
-public class Task {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @CreationTimestamp //XXX or maybe rather use http://stackoverflow.com/questions/5257709/how-to-autogenerate-created-or-modified-timestamp-field
-    private Date created;
-
-    @UpdateTimestamp
-    private Date modified;
+public class Task extends BaseEntity {
 
     @NotNull
     @Size(min = 1)
@@ -68,22 +56,6 @@ public class Task {
 
     public Long getId() {
         return id;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Date getModified() {
-        return modified;
-    }
-
-    public void setModified(Date modified) {
-        this.modified = modified;
     }
 
     public boolean isChecked() {
@@ -162,8 +134,6 @@ public class Task {
     public String toString() {
         return "Task{" +
                 "id=" + id +
-                ", created=" + created +
-                ", modified=" + modified +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", dueDate=" + dueDate +

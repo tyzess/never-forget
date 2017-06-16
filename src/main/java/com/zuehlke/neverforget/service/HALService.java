@@ -2,8 +2,8 @@ package com.zuehlke.neverforget.service;
 
 import com.zuehlke.neverforget.controller.CategoryController;
 import com.zuehlke.neverforget.controller.TaskController;
-import com.zuehlke.neverforget.domain.Category;
-import com.zuehlke.neverforget.domain.Task;
+import com.zuehlke.neverforget.domain.model.Category;
+import com.zuehlke.neverforget.domain.model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.Link;

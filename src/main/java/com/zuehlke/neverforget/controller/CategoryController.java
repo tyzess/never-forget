@@ -1,7 +1,7 @@
 package com.zuehlke.neverforget.controller;
 
 
-import com.zuehlke.neverforget.domain.Category;
+import com.zuehlke.neverforget.domain.model.Category;
 import com.zuehlke.neverforget.service.CategoryService;
 import com.zuehlke.neverforget.service.HALService;
 

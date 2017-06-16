@@ -1,6 +1,9 @@
 package com.zuehlke.neverforget.util;
 
 import com.zuehlke.neverforget.domain.*;
+import com.zuehlke.neverforget.domain.model.Category;
+import com.zuehlke.neverforget.domain.model.Task;
+import com.zuehlke.neverforget.domain.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
